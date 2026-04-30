@@ -5,12 +5,17 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useFetcher,
+  useLoaderData,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 
 import { ConvexProvider, ConvexReactClient } from "convex/react";
+
+import { useTheme } from "react-router-theme";
+export { action, loader } from "react-router-theme";
 
 //====//
 
@@ -39,8 +44,12 @@ export const links: Route.LinksFunction = () => [
 //----//
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const loaderData = useLoaderData() as { theme: string };
+  const fetcher = useFetcher();
+  const [theme, setTheme] = useTheme(loaderData, fetcher, 'dark');
+
   return (
-    <html lang="en">
+    <html lang="en" className={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
