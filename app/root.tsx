@@ -12,11 +12,11 @@ import "./app.css";
 
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
-/*====*/
+//====//
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
-/*----*/
+//----//
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -31,7 +31,7 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-/*----*/
+//----//
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -51,7 +51,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-/*----*/
+//----//
 
 export default function App() {
   return <ConvexProvider client={convex}>
@@ -59,7 +59,7 @@ export default function App() {
   </ConvexProvider>;
 }
 
-/*----*/
+//----//
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
