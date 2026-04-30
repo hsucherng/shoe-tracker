@@ -1,6 +1,5 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { Welcome } from "../welcome/welcome";
 import type { Route } from "./+types/home";
 
 /*====*/
@@ -16,8 +15,6 @@ export default function Home() {
   const shoes = useQuery(api.shoes.get);
 
   return <>
-    <Welcome />
-
     {shoes && JSON.stringify(shoes)}
   </>;
 }
