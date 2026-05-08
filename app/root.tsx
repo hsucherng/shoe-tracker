@@ -15,6 +15,7 @@ import "./app.css";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
 import { useTheme } from "react-router-theme";
+import { SiteHeader } from "./site-header";
 export { action, loader } from "react-router-theme";
 
 //====//
@@ -46,7 +47,7 @@ export const links: Route.LinksFunction = () => [
 export function Layout({ children }: { children: React.ReactNode }) {
   const loaderData = useLoaderData() as { theme: string };
   const fetcher = useFetcher();
-  const [theme, setTheme] = useTheme(loaderData, fetcher, 'dark');
+  const [theme] = useTheme(loaderData, fetcher, 'dark');
 
   return (
     <html lang="en" className={theme}>
@@ -69,6 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return <ConvexProvider client={convex}>
+    <SiteHeader />  
     <Outlet />
   </ConvexProvider>;
 }
