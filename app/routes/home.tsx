@@ -1,25 +1,59 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Column, ColumnDef, SortDirection } from "@tanstack/react-table";
 import { useQuery } from "convex/react";
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { ChevronDownIcon, ChevronsUpDownIcon, ChevronUpIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import {
+  ChevronDownIcon,
+  ChevronsUpDownIcon,
+  ChevronUpIcon,
+  PlusIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import z from 'zod';
+import z from "zod";
 import Autocomplete from "~/components/ui/autocomplete";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
 import { Checkbox } from "~/components/ui/checkbox";
-import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "~/components/ui/combobox";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "~/components/ui/combobox";
 import { ContentWrapper } from "~/components/ui/content-wrapper";
 import { DataTable } from "~/components/ui/data-table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
-import { Field, FieldError, FieldGroup, FieldLabel } from "~/components/ui/field";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "~/components/ui/item";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "~/components/ui/item";
 import { Label } from "~/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
 import { api } from "../../convex/_generated/api";
 import type { Route } from "./+types/home";
 
@@ -27,11 +61,8 @@ dayjs.extend(customParseFormat);
 
 //====//
 
-export function meta({ }: Route.MetaArgs) {
-  return [
-    { title: "Shoes!" },
-    { name: "description", content: "" },
-  ];
+export function meta({}: Route.MetaArgs) {
+  return [{ title: "Shoes!" }, { name: "description", content: "" }];
 }
 
 //----//
@@ -47,49 +78,55 @@ interface ShoeProps {
 
 const SAMPLE_SHOES_DATA: ShoeProps[] = [
   {
-    id: '1',
-    name: '1461',
-    brand: 'Dr. Martens',
-    color: 'Black',
+    id: "1",
+    name: "1461",
+    brand: "Dr. Martens",
+    color: "Black",
     count: 10,
-    lastworndate: '01/05/2026',
+    lastworndate: "01/05/2026",
   },
   {
-    id: '10',
-    name: '1460 Made in England',
-    brand: 'Dr. Martens',
-    color: 'Black',
+    id: "10",
+    name: "1460 Made in England",
+    brand: "Dr. Martens",
+    color: "Black",
     count: 5,
-    lastworndate: '03/04/2026',
+    lastworndate: "03/04/2026",
   },
   {
-    id: '01',
-    name: 'Ripple Monkey Boots',
-    brand: 'George Cox',
-    color: 'Black',
+    id: "01",
+    name: "Ripple Monkey Boots",
+    brand: "George Cox",
+    color: "Black",
     count: 3,
-    lastworndate: '15/04/2026',
-  }
+    lastworndate: "15/04/2026",
+  },
 ];
 
 const SAMPLE_BRANDS_DATA: string[] = [
-  'Converse',
-  'Dr. Martens',
-  'George Cox',
-  'Onitsuka Tiger'
+  "Converse",
+  "Dr. Martens",
+  "George Cox",
+  "Onitsuka Tiger",
 ];
 
 const fetchSuggestions = async (query: string): Promise<string[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 300)) // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 300)); // Simulate network delay
 
   return SAMPLE_BRANDS_DATA.filter((suggestion) =>
     suggestion.toLowerCase().includes(query.toLowerCase()),
-  )
-}
+  );
+};
 
 //----//
 
-function DataTableHeaderSortButton({ column, children }: { column: Column<ShoeProps>; children: React.ReactNode; }) {
+function DataTableHeaderSortButton({
+  column,
+  children,
+}: {
+  column: Column<ShoeProps>;
+  children: React.ReactNode;
+}) {
   return (
     <Button
       variant="ghost"
@@ -102,12 +139,18 @@ function DataTableHeaderSortButton({ column, children }: { column: Column<ShoePr
   );
 }
 
-function SortIcon({ sortState, ...props }: { sortState: false | SortDirection; className?: string; }) {
+function SortIcon({
+  sortState,
+  ...props
+}: {
+  sortState: false | SortDirection;
+  className?: string;
+}) {
   let IconComponent = ChevronsUpDownIcon;
 
-  if (sortState === 'asc') {
+  if (sortState === "asc") {
     IconComponent = ChevronUpIcon;
-  } else if (sortState === 'desc') {
+  } else if (sortState === "desc") {
     IconComponent = ChevronDownIcon;
   }
 
@@ -122,7 +165,7 @@ export const columns: ColumnDef<ShoeProps>[] = [
         <DataTableHeaderSortButton column={column}>
           Brand
         </DataTableHeaderSortButton>
-      )
+      );
     },
   },
   {
@@ -132,7 +175,7 @@ export const columns: ColumnDef<ShoeProps>[] = [
         <DataTableHeaderSortButton column={column}>
           Name
         </DataTableHeaderSortButton>
-      )
+      );
     },
   },
   {
@@ -142,7 +185,7 @@ export const columns: ColumnDef<ShoeProps>[] = [
         <DataTableHeaderSortButton column={column}>
           Colour
         </DataTableHeaderSortButton>
-      )
+      );
     },
   },
   {
@@ -152,7 +195,7 @@ export const columns: ColumnDef<ShoeProps>[] = [
         <DataTableHeaderSortButton column={column}>
           Wear count
         </DataTableHeaderSortButton>
-      )
+      );
     },
   },
   {
@@ -162,11 +205,11 @@ export const columns: ColumnDef<ShoeProps>[] = [
         <DataTableHeaderSortButton column={column}>
           Last worn date
         </DataTableHeaderSortButton>
-      )
+      );
     },
     sortingFn: (rowA, rowB, columnId) => {
-      const dateA = dayjs(rowA.getValue(columnId), 'DD/MM/YYYY');
-      const dateB = dayjs(rowB.getValue(columnId), 'DD/MM/YYYY');
+      const dateA = dayjs(rowA.getValue(columnId), "DD/MM/YYYY");
+      const dateB = dayjs(rowB.getValue(columnId), "DD/MM/YYYY");
 
       if (dateA.isBefore(dateB)) return -1;
       if (dateA.isAfter(dateB)) return 1;
@@ -175,9 +218,9 @@ export const columns: ColumnDef<ShoeProps>[] = [
     cell: ({ row }) => {
       const lastworndate: string = row.getValue("lastworndate");
       return displayDate(lastworndate);
-    }
-  }
-]
+    },
+  },
+];
 
 //----//
 
@@ -185,7 +228,7 @@ export default function Home() {
   const shoes = useQuery(api.shoes.get);
 
   if (shoes) {
-    console.log('shoes API', shoes);
+    console.log("shoes API", shoes);
   }
 
   return (
@@ -193,9 +236,7 @@ export default function Home() {
       <div className="flex justify-between mb-4">
         <Field orientation="horizontal">
           <Checkbox id="groupByBrands" name="groupByBrands" />
-          <Label htmlFor="groupByBrands">
-            Group by brands
-          </Label>
+          <Label htmlFor="groupByBrands">Group by brands</Label>
         </Field>
 
         <AddWearCountDialog />
@@ -234,16 +275,16 @@ function AddWearCountDialog() {
 
       <DialogContent className="sm:max-w-80">
         <DialogHeader className="text-center">
-          <DialogTitle>
-            Add wear
-          </DialogTitle>
+          <DialogTitle>Add wear</DialogTitle>
         </DialogHeader>
 
         <div className="container mx-auto max-w-75">
           {JSON.stringify(selectedShoe)}
           <Combobox
             items={SAMPLE_SHOES_DATA}
-            itemToStringLabel={(shoe: ShoeProps) => `${shoe.brand} ${shoe.name} (${shoe.color})`}
+            itemToStringLabel={(shoe: ShoeProps) =>
+              `${shoe.brand} ${shoe.name} (${shoe.color})`
+            }
             value={selectedShoe}
             onValueChange={setSelectedShoe}
           >
@@ -280,18 +321,11 @@ function AddWearCountDialog() {
 //----//
 
 const newShoesFormSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Required"),
-  brand: z
-    .string()
-    .min(1, "Required"),
-  colour: z
-    .string()
-    .min(1, "Required"),
-  startcount: z
-    .coerce.number<number>({ error: 'Must be number' }),
-})
+  name: z.string().min(1, "Required"),
+  brand: z.string().min(1, "Required"),
+  colour: z.string().min(1, "Required"),
+  startcount: z.coerce.number<number>({ error: "Must be number" }),
+});
 
 function NewShoeDialog() {
   const newShoesForm = useForm<z.infer<typeof newShoesFormSchema>>({
@@ -307,7 +341,7 @@ function NewShoeDialog() {
 
   function onSubmit(data: z.infer<typeof newShoesFormSchema>) {
     // Do something with the form values.
-    console.log(data)
+    console.log(data);
   }
 
   ////
@@ -322,9 +356,7 @@ function NewShoeDialog() {
 
       <DialogContent className="sm:max-w-80">
         <DialogHeader className="text-center">
-          <DialogTitle>
-            New shoe
-          </DialogTitle>
+          <DialogTitle>New shoe</DialogTitle>
         </DialogHeader>
 
         <div className="container mx-auto max-w-75">
@@ -334,13 +366,16 @@ function NewShoeDialog() {
                 name="brand"
                 control={newShoesForm.control}
                 render={({ field, fieldState }) => (
-
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="new-shoes-form-brand">
                       Brand
                     </FieldLabel>
 
-                    <Autocomplete value={field.value} onChange={field.onChange} fetchSuggestions={fetchSuggestions} />
+                    <Autocomplete
+                      value={field.value}
+                      onChange={field.onChange}
+                      fetchSuggestions={fetchSuggestions}
+                    />
 
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -354,9 +389,7 @@ function NewShoeDialog() {
                 control={newShoesForm.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="new-shoes-form-name">
-                      Name
-                    </FieldLabel>
+                    <FieldLabel htmlFor="new-shoes-form-name">Name</FieldLabel>
 
                     <Input
                       {...field}
@@ -418,7 +451,9 @@ function NewShoeDialog() {
                 )}
               />
 
-              <Button type="submit" className="w-full">Add shoes</Button>
+              <Button type="submit" className="w-full">
+                Add shoes
+              </Button>
             </FieldGroup>
           </form>
         </div>
@@ -439,9 +474,7 @@ function DeleteShoeAction({ shoe }: { shoe: ShoeProps }) {
       </PopoverTrigger>
 
       <PopoverContent className="w-35 p-0 border-0">
-        <Button variant="destructive">
-          Confirm delete
-        </Button>
+        <Button variant="destructive">Confirm delete</Button>
       </PopoverContent>
     </Popover>
   );
@@ -457,8 +490,7 @@ function MobileShoesListing() {
           <Item key={`${shoe.brand}-${shoe.name}`}>
             <ItemContent>
               <ItemTitle className="text-sm">
-                {shoe.brand}
-                {' '} • {shoe.name}
+                {shoe.brand} • {shoe.name}
                 {shoe.color && ` • ${shoe.color}`}
               </ItemTitle>
 
@@ -468,41 +500,36 @@ function MobileShoesListing() {
             </ItemContent>
 
             <ItemMedia className="self-center! block text-center">
-              <div className="font-bold text-xl leading-none">
-                {shoe.count}
-              </div>
+              <div className="font-bold text-xl leading-none">{shoe.count}</div>
 
-              <div className="text-xs">
-                wears
-              </div>
+              <div className="text-xs">wears</div>
             </ItemMedia>
           </Item>
-        )
+        );
       })}
     </>
-  )
+  );
 }
 
 //----//
 
 function displayDate(dateStr: string) {
   if (!dateStr) {
-    return '-';
+    return "-";
   }
 
-  const dateDayjs = dayjs(dateStr, 'DD/MM/YYYY');
-  const differenceInDays = dateDayjs.diff(dayjs(), 'days');
+  const dateDayjs = dayjs(dateStr, "DD/MM/YYYY");
+  const differenceInDays = dateDayjs.diff(dayjs(), "days");
 
   if (differenceInDays === 0) {
-    return 'Today';
+    return "Today";
   }
 
   if (differenceInDays === -1) {
-    return 'Yesterday';
+    return "Yesterday";
   }
 
-  return dateDayjs.format('ddd, DD MMM YYYY');
+  return dateDayjs.format("ddd, DD MMM YYYY");
 }
 
 //----//
-

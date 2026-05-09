@@ -47,7 +47,7 @@ export const links: Route.LinksFunction = () => [
 export function Layout({ children }: { children: React.ReactNode }) {
   const loaderData = useLoaderData() as { theme: string };
   const fetcher = useFetcher();
-  const [theme] = useTheme(loaderData, fetcher, 'dark');
+  const [theme] = useTheme(loaderData, fetcher, "dark");
 
   return (
     <html lang="en" className={theme}>
@@ -69,10 +69,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 //----//
 
 export default function App() {
-  return <ConvexProvider client={convex}>
-    <SiteHeader />  
-    <Outlet />
-  </ConvexProvider>;
+  return (
+    <ConvexProvider client={convex}>
+      <SiteHeader />
+      <Outlet />
+    </ConvexProvider>
+  );
 }
 
 //----//

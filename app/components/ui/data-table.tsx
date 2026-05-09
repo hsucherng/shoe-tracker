@@ -1,4 +1,3 @@
-
 import {
   type ColumnDef,
   type SortingState,
@@ -20,8 +19,8 @@ import {
 //====//
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 //----//
@@ -32,7 +31,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   ////
 
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
     data,
@@ -43,7 +42,7 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
     },
-  })
+  });
 
   ////
 
@@ -59,11 +58,11 @@ export function DataTable<TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -92,5 +91,5 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

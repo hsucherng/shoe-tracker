@@ -8,9 +8,7 @@ export function SiteHeader() {
         <NavLink to="/" className="inline-flex align-middle items-center gap-2">
           <img src="logo-dark.png" alt="" className="h-9" />
 
-          <b>
-            Shoes!
-          </b>
+          <b>Shoes!</b>
         </NavLink>
       </ContentWrapper>
     </div>
